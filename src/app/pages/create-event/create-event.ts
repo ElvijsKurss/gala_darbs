@@ -57,6 +57,13 @@ export class CreateEvent {
       return;
     }
 
+    const username = localStorage.getItem('username') || '';
+
+    if (!username) {
+      this.error = 'Nav atrasts lietotājs. Lūdzu, pieslēdzies vēlreiz.';
+      return;
+    }
+
     this.eventService
       .createEvent(
         this.form.value as {
@@ -67,6 +74,7 @@ export class CreateEvent {
           location: string;
           maxParticipants: number;
         },
+        username,
       )
       .subscribe({
         next: () => this.router.navigate(['/events']),

@@ -10,4 +10,5 @@ export interface EventModel {
   registeredCount: number;
   full: boolean;
   joined: boolean;
+  createdByUsername: string | null;
 }

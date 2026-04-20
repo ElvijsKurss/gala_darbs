@@ -28,7 +28,9 @@
                         Atcelt dalību
                     </button>
 
-                    <button class="btn btn-warning" *ngIf="!event.cancelled" (click)="cancelEvent(event.id)">
+                    <button class="btn btn-warning"
+                        *ngIf="!event.cancelled && event.createdByUsername === authService.getUsername()"
+                        (click)="cancelEvent(event.id)">
                         Atcelt pasākumu
                     </button>
                 </div>

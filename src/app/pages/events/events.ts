@@ -13,7 +13,7 @@ import { AuthService } from '../../core/services/auth.service';
 })
 export class Events implements OnInit {
   private eventService = inject(EventService);
-  private authService = inject(AuthService);
+  authService = inject(AuthService);
 
   events: EventModel[] = [];
   error = '';
@@ -35,7 +35,7 @@ export class Events implements OnInit {
 
     this.eventService.getEvents(username).subscribe({
       next: (res) => {
-        this.events = res;
+        this.events = res.filter((event) => !event.cancelled);
         this.error = '';
       },
       error: (err) => {
@@ -80,7 +80,14 @@ export class Events implements OnInit {
   }
 
   cancelEvent(id: number) {
-    this.eventService.cancelEvent(id).subscribe({
+    const username = this.authService.getUsername();
+
+    if (!username) {
+      alert('Nav atrasts lietotājs. Lūdzu, pieslēdzies vēlreiz.');
+      return;
+    }
+
+    this.eventService.cancelEvent(id, username).subscribe({
       next: () => this.loadEvents(),
       error: (err) => {
         console.log('CANCEL EVENT ERROR:', err);
