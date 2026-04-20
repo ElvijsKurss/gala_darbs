@@ -6,9 +6,8 @@ export interface EventModel {
   time: string;
   location: string;
   maxParticipants: number;
+  cancelled: boolean;
   registeredCount: number;
   full: boolean;
-  cancelled: boolean;
   joined: boolean;
-  createdBy: string;
 }

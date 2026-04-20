@@ -31,7 +31,9 @@ export class Login {
 
     this.authService.login(this.form.value as { username: string; password: string }).subscribe({
       next: () => this.router.navigate(['/events']),
-      error: (err) => (this.error = err.error?.message || 'Nepareizi pieslēgšanās dati'),
+      error: (err) => {
+        this.error = err.error?.message || 'Nepareizi pieslēgšanās dati';
+      },
     });
   }
 }

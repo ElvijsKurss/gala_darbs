@@ -33,9 +33,22 @@ export class CreateEvent {
       return;
     }
 
-    this.eventService.createEvent(this.form.value).subscribe({
-      next: () => this.router.navigate(['/events']),
-      error: (err) => (this.error = err.error?.message || 'Pasākumu neizdevās izveidot'),
-    });
+    this.eventService
+      .createEvent(
+        this.form.value as {
+          title: string;
+          description: string;
+          date: string;
+          time: string;
+          location: string;
+          maxParticipants: number;
+        },
+      )
+      .subscribe({
+        next: () => this.router.navigate(['/events']),
+        error: (err) => {
+          this.error = err.error?.message || 'Pasākumu neizdevās izveidot';
+        },
+      });
   }
 }

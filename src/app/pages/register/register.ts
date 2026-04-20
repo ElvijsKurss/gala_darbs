@@ -30,8 +30,10 @@ export class Register {
     }
 
     this.authService.register(this.form.value as { username: string; password: string }).subscribe({
-      next: () => this.router.navigate(['/events']),
-      error: (err) => (this.error = err.error?.message || 'Reģistrācija neizdevās'),
+      next: () => this.router.navigate(['/login']),
+      error: (err) => {
+        this.error = err.error?.message || 'Reģistrācija neizdevās';
+      },
     });
   }
 }

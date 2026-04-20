@@ -2,6 +2,7 @@ import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { EventService } from '../../core/services/event.service';
 import { EventModel } from '../../models/event.model';
+import { AuthService } from '../../core/services/auth.service';
 
 @Component({
   selector: 'app-events',
@@ -12,6 +13,7 @@ import { EventModel } from '../../models/event.model';
 })
 export class Events implements OnInit {
   private eventService = inject(EventService);
+  private authService = inject(AuthService);
 
   events: EventModel[] = [];
   error = '';
@@ -21,27 +23,43 @@ export class Events implements OnInit {
   }
 
   loadEvents() {
-    this.eventService.getEvents().subscribe({
-      next: (res) => (this.events = res),
-      error: () => (this.error = 'Neizdevās ielādēt pasākumus'),
+    const username = this.authService.getUsername();
+
+    this.eventService.getEvents(username).subscribe({
+      next: (res) => {
+        this.events = res;
+      },
+      error: () => {
+        this.error = 'Neizdevās ielādēt pasākumus';
+      },
     });
   }
 
   join(id: number) {
-    this.eventService.joinEvent(id).subscribe({
+    const username = this.authService.getUsername();
+
+    if (!username) {
+      alert('Nav atrasts lietotājs. Lūdzu, pieslēdzies vēlreiz.');
+      return;
+    }
+
+    this.eventService.joinEvent(id, username).subscribe({
       next: () => this.loadEvents(),
       error: (err) => alert(err.error?.message || 'Neizdevās pieteikties'),
     });
   }
 
   leave(id: number) {
-    this.eventService.leaveEvent(id).subscribe({
+    const username = this.authService.getUsername();
+
+    if (!username) {
+      alert('Nav atrasts lietotājs. Lūdzu, pieslēdzies vēlreiz.');
+      return;
+    }
+
+    this.eventService.leaveEvent(id, username).subscribe({
       next: () => this.loadEvents(),
       error: (err) => alert(err.error?.message || 'Neizdevās atcelt dalību'),
     });
-  }
-
-  get myEvents() {
-    return this.events.filter((e) => e.joined);
   }
 }
