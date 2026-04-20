@@ -31,4 +31,8 @@ export class EventService {
   leaveEvent(id: number, username: string) {
     return this.http.delete(`${this.api}/${id}/leave?username=${encodeURIComponent(username)}`);
   }
+
+  cancelEvent(id: number) {
+    return this.http.put(`${this.api}/${id}/cancel`, {});
+  }
 }

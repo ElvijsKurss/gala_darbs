@@ -18,7 +18,7 @@
                 <span class="badge bg-warning text-dark me-2" *ngIf="event.full">Pilns</span>
                 <span class="badge bg-danger me-2" *ngIf="event.cancelled">Atcelts</span>
 
-                <div class="mt-3 d-flex gap-2">
+                <div class="mt-3 d-flex gap-2 flex-wrap">
                     <button class="btn btn-primary" *ngIf="!event.joined && !event.full && !event.cancelled"
                         (click)="join(event.id)">
                         Pieteikties
@@ -26,6 +26,10 @@
 
                     <button class="btn btn-outline-danger" *ngIf="event.joined" (click)="leave(event.id)">
                         Atcelt dalību
+                    </button>
+
+                    <button class="btn btn-warning" *ngIf="!event.cancelled" (click)="cancelEvent(event.id)">
+                        Atcelt pasākumu
                     </button>
                 </div>
             </div>
